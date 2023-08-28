@@ -11,6 +11,10 @@ contract AA is Executor {
         owner = _owner;
     }
 
+    receive() external payable {
+        // This function is called when Ether is sent to the contract
+    }
+
     function execute_data(
         address to,
         uint256 value,
@@ -20,5 +24,11 @@ contract AA is Executor {
     ) public {
         require(msg.sender == owner, "Only owner can change value");
         execute(to, value, data, operation, txGas);
+    }
+
+    function withdraw() public {
+        require(msg.sender == owner, "Only the owner can withdraw");
+
+        payable(owner).transfer(address(this).balance);
     }
 }
