@@ -23,12 +23,17 @@ let signerAccount;
 before(async () => {
     accounts = await web3.eth.getAccounts();
 
+    const password_to = "testpassword2";
+    signerAccount = await web3.eth.personal.newAccount(password_to);
+    await web3.eth.personal.unlockAccount(signerAccount, password_to, 600);
+
     // DEPLOY AA
     {
         const contract = new web3.eth.Contract(aaAbi);
 
         const deploy = contract.deploy({
             data: aaBytecode,
+            arguments: [signerAccount]
         });
         const deployTransaction = deploy.encodeABI();
         const gasEstimate = await web3.eth.estimateGas({
@@ -67,11 +72,6 @@ before(async () => {
 
         counterContract = new web3.eth.Contract(counterAbi, counterAddress);
     }
-
-
-    const password_to = "testpassword2";
-    signerAccount = await web3.eth.personal.newAccount(password_to);
-    await web3.eth.personal.unlockAccount(signerAccount, password_to, 600);
 })
 
 describe('Aggregation', () => {

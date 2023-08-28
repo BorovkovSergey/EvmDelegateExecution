@@ -5,7 +5,11 @@ import "./Executor.sol";
 pragma solidity ^0.8.3;
 
 contract AA is Executor {
-    constructor() {}
+    address owner;
+
+    constructor(address _owner) {
+        owner = _owner;
+    }
 
     function execute_data(
         address to,
@@ -14,6 +18,7 @@ contract AA is Executor {
         Enum.Operation operation,
         uint256 txGas
     ) public {
+        require(msg.sender == owner, "Only owner can change value");
         execute(to, value, data, operation, txGas);
     }
 }
