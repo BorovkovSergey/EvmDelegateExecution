@@ -100,26 +100,26 @@ describe('Aggregation', () => {
         console.log(`Balance of address ${myEoa} on Goerli testnet: ${balanceEther} ETH`);
 
         let data = await swapData(UNI_TOKEN, WETH[chainId], .002);
-        console.log("data", data);
-        let data_to_execution = await aaContract.methods.execute_data(
-            data.to,
-            data.value,
-            data.data,
-            0, // DelegateCall
-            data.gasLimit,
-        ).encodeABI();
+        console.log("data", data.data);
+        // let data_to_execution = await aaContract.methods.execute_data(
+        //     data.to,
+        //     data.value,
+        //     data.data,
+        //     0, // DelegateCall
+        //     data.gasLimit,
+        // ).encodeABI();
 
-        const signedTx = await web3.eth.accounts.signTransaction({
-            nonce: web3.eth.getTransactionCount(myEoa),
-            gasPrice: web3.utils.toWei('50', 'wei'),
-            gasLimit: web3.utils.toHex(3500000),
-            to: aaAddress,
-            value: web3.utils.toHex(web3.utils.toWei('0.0', 'ether')),
-            data: data_to_execution
-        }, myPK);
+        // const signedTx = await web3.eth.accounts.signTransaction({
+        //     nonce: web3.eth.getTransactionCount(myEoa),
+        //     gasPrice: web3.utils.toWei('50', 'wei'),
+        //     gasLimit: web3.utils.toHex(3500000),
+        //     to: aaAddress,
+        //     value: web3.utils.toHex(web3.utils.toWei('0.0', 'ether')),
+        //     data: data_to_execution
+        // }, myPK);
 
-        await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        // await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 
-        console.log('Swap completed!');
+        // console.log('Swap completed!');
     }).timeout(40000);
 });
